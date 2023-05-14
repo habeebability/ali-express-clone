@@ -153,15 +153,72 @@
                 <Icon name="ph:magnifying-glass" size="20" color="ffffff" />
               </button>
             </div>
+
+            <div class="absolute bg-white max-w-[700px] h-auto w-full">
+              <div v-if="false" class="p-1">
+                <NuxtLink
+                  to="/item/1"
+                  class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
+                >
+                  <div class="flex items-center">
+                    <img
+                      width="40"
+                      src="https://picsum.photos/id/82/300/300"
+                      alt
+                      class="rounded-md"
+                    />
+                    <div class="truncate ml-2">TESTING</div>
+                  </div>
+                  <div class="truncate">$ 98.99</div>
+                </NuxtLink>
+              </div>
+            </div>
           </div>
         </div>
+
+        <NuxtLink to="/shoppingcart" class="flex items-center">
+          <button
+            class="relative md:block hidden"
+            @mouseenter="isCartHover= true"
+            @mouseleave="isCartHover = false"
+          >
+            <span
+              class="absolute flex items-center justify-center -right-[3px] top-0 bg-[#ff4646] h-[17px] text-xs text-white px-0.5 rounded-full"
+            >0</span>
+            <div class="min-w-[40px]">
+              <Icon
+                name="ph:shopping-cart-simple-light"
+                size="33"
+                :color="isCartHover ? '#ff4646' : ''"
+              />
+            </div>
+          </button>
+        </NuxtLink>
+
+        <button
+          @click="userStore.isMenuOverlay = true"
+          class="md:hidden block rounded-full p-1.5 -mt-[4px] hover:bg-gray-200"
+        >
+          <Icon name="radix-icons:hamburger-menu" size="33" />
+        </button>
       </div>
     </div>
   </div>
+
+  <Loading v-if="userStore.isLoading" />
+
+  <div class="lg:pt-[150px] md:pt-[130px] pt-[80px]" />
+  <slot />
+
+  <Footer v-if="!userStore.isLoading" />
 </template>
 
 <script setup>
+import { useUserStore } from "~/stores/user";
+const userStore = useUserStore();
+
 let isAccountMenu = ref(false);
+let isCartHover = ref(false);
 let isSearching = ref(false);
 let searchItem = ref("");
 </script>
