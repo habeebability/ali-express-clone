@@ -25,6 +25,11 @@
           5,000+ sold
           <Icon name="material-symbols:star-rate" color="#757575" class="ml-1.5" />4.7
         </p>
+
+        <p class="px-1 pt-0.5 text-xs text-[#252525]">{{ product.title.substring(0, 60) }}</p>
+        <div class="px-1 pb-1">
+          <span class="text-[#009A66] text-xs font-semibold">Free Shipping</span>
+        </div>
       </div>
     </NuxtLink>
   </div>
