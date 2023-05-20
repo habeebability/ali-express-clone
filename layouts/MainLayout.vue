@@ -42,7 +42,7 @@
               v-show="isAccountMenu"
               class="absolute bg-white w-[220px] text-[#333333] z-40 top-[38px] -left-[100px] border-x border-b"
             >
-              <div v-if="true">
+              <div v-if="!user">
                 <div class="text-semibold text-[15px] my-4 px-3">Welcome to AliExpress</div>
 
                 <div class="flex items-center gap-1 px-3 mb-3">
@@ -53,76 +53,17 @@
                 </div>
               </div>
 
-              <!-- Test -->
-              <!-- <div class="antialiased font-sans flex justify-center mt-8">
-                
-                <div class="fixed inset-0" @click="isVisible = false"></div>
-                <div
-                  class="relative inline-block"
-                  @mouseover="isVisible = true"
-                  @mouseleave="isVisible = false"
-                  @keydown.enter="isVisible = !isVisible"
-                >
-                  <button
-                    type="button"
-                    class="inline-flex items-center justify-between px-2 py-1 font-medium text-gray-700 transition-all duration-500 rounded-md focus:outline-none focus:text-brand-900 sm:focus:shadow-outline"
-                  >
-                    <span class="flex-shrink-0">Menu</span>
-                    <svg fill="currentColor" viewBox="0 0 20 20" class="flex-shrink-0 w-5 h-5 ml-1">
-                      <path
-                        :class="{ 'rotate-180': isVisible }"
-                        class="transition duration-300 ease-in-out origin-center transform"
-                        fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <transition
-                    enter-active-class="transition duration-300 ease-out transform"
-                    enter-class="-translate-y-3 scale-95 opacity-0"
-                    enter-to-class="translate-y-0 scale-100 opacity-100"
-                    leave-active-class="transition duration-150 ease-in transform"
-                    leave-class="translate-y-0 opacity-100"
-                    leave-to-class="-translate-y-3 opacity-0"
-                  >
-                    <div v-show="isVisible" class="absolute pt-2">
-                      <div class="relative py-1 bg-white border border-gray-200 rounded-md shadow-xl">
-                        <div
-                          class="absolute top-0 w-4 h-4 origin-center transform rotate-45 translate-x-5 -translate-y-2 bg-white border-t border-l border-gray-200 rounded-sm pointer-events-none"
-                        ></div>
-                        <div class="relative">
-                          <a
-                            href="#"
-                            class="block w-full px-4 py-2 font-medium text-gray-700 whitespace-no-wrap hover:bg-gray-100 focus:outline-none hover:text-gray-900 focus:text-gray-900 focus:shadow-outline transition duration-300 ease-in-out"
-                          >Submenu Link #1</a>
-                          <a
-                            href="#"
-                            class="block w-full px-4 py-2 font-medium text-gray-700 whitespace-no-wrap hover:bg-gray-100 focus:outline-none hover:text-gray-900 focus:text-gray-900 focus:shadow-outline transition duration-300 ease-in-out"
-                          >Submenu Link #2</a>
-                          <a
-                            href="#"
-                            class="block w-full px-4 py-2 font-medium text-gray-700 whitespace-no-wrap hover:bg-gray-100 focus:outline-none hover:text-gray-900 focus:text-gray-900 focus:shadow-outline transition duration-300 ease-in-out"
-                          >Submenu Link #3</a>
-                          <a
-                            href="#"
-                            class="block w-full px-4 py-2 font-medium text-gray-700 whitespace-no-wrap hover:bg-gray-100 focus:outline-none hover:text-gray-900 focus:text-gray-900 focus:shadow-outline transition duration-300 ease-in-out"
-                          >Submenu Link #4</a>
-                        </div>
-                      </div>
-                    </div>
-                  </transition>
-                </div>
-              </div>-->
-              <!-- Test end -->
-
               <div class="border-b" />
               <ul class="bg-white">
                 <li
                   @click="navigateTo('/orders')"
                   class="text-[13px] py-2 px-4 w-full hover:bg-gray-200"
                 >My Orders</li>
-                <li v-if="true" class="text-[13px] py-2 px-4 w-full hover:bg-gray-200">Sign out</li>
+                <li
+                  @click="client.auth.signOut()"
+                  v-if="user"
+                  class="text-[13px] py-2 px-4 w-full hover:bg-gray-200"
+                >Sign out</li>
               </ul>
             </div>
           </transition>
@@ -155,22 +96,19 @@
             </div>
 
             <div class="absolute bg-white max-w-[700px] h-auto w-full">
-              <div v-if="false" class="p-1">
-                <NuxtLink
-                  to="/item/1"
-                  class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
-                >
-                  <div class="flex items-center">
-                    <img
-                      width="40"
-                      src="https://picsum.photos/id/82/300/300"
-                      alt
-                      class="rounded-md"
-                    />
-                    <div class="truncate ml-2">TESTING</div>
-                  </div>
-                  <div class="truncate">$ 98.99</div>
-                </NuxtLink>
+              <div v-if="items && items.data" class="p-1">
+                <div class="p-1" v-for="item in items.data" :key="item.id">
+                  <NuxtLink
+                    :to="`/item/${item.id}`"
+                    class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
+                  >
+                    <div class="flex items-center">
+                      <img width="40" :src="item.url" alt class="rounded-md" />
+                      <div class="truncate ml-2">{{ item.title }}</div>
+                    </div>
+                    <div class="truncate">$ {{ item.price / 100 }}</div>
+                  </NuxtLink>
+                </div>
               </div>
             </div>
           </div>
@@ -184,7 +122,7 @@
           >
             <span
               class="absolute flex items-center justify-center -right-[3px] top-0 bg-[#ff4646] h-[17px] text-xs text-white px-0.5 rounded-full"
-            >0</span>
+            >{{ userStore.cart.length }}</span>
             <div class="min-w-[40px]">
               <Icon
                 name="ph:shopping-cart-simple-light"
@@ -217,10 +155,37 @@
 import { useUserStore } from "~/stores/user";
 const userStore = useUserStore();
 
+const client = useSupabaseClient();
+const user = useSupabaseUser();
+
 let isAccountMenu = ref(false);
 let isCartHover = ref(false);
 let isSearching = ref(false);
 let searchItem = ref("");
+let items = ref(null);
+
+const searchByName = useDebounce(async () => {
+  isSearching.value;
+  items.value = await useFetch(
+    `/api/prisma/search-by-name/${searchItem.value}`
+  );
+  isSearching.value = false;
+}, 100);
+
+watch(
+  () => searchItem.value,
+  async () => {
+    if (!searchItem.value) {
+      setTimeout(() => {
+        items.value = null;
+        isSearching.value = false;
+
+        return;
+      }, 500);
+    }
+    searchByName();
+  }
+);
 </script>
 
 <style>

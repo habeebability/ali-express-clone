@@ -19,7 +19,7 @@ const route = useRoute();
 let windowWidth = ref(process.client ? window.innerWidth : "");
 
 onMounted(() => {
-  userStore.isLoading = true;
+  userStore.isLoading = false;
 
   window.addEventListener("resize", function () {
     windowWidth.value = window.innerWidth;
@@ -29,7 +29,7 @@ onMounted(() => {
 watch(
   () => windowWidth.value,
   () => {
-    if (windowWidth.value > 767) {
+    if (windowWidth.value >= 767) {
       userStore.isMenuOverlay = false;
     }
   }
