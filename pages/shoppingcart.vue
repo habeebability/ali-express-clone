@@ -107,16 +107,31 @@ const selectedRadioFunc = (e) => {
     }
   });
 };
+// const goToCheckout = () => {
+//   let ids = [];
+//   userStore.checkout = [];
+//   selectedArray.value.forEach((item) => ids.push(item.id));
+
+//   let result = userStore.cart.filter((item) => {
+//     return ids.indexOf(item.id) != -1;
+//   });
+//   // toRaw is used to convert reactive object to normal object, removes the need for .value in reactive objects
+//   result.forEach((item) => userStore.checkout.push(toRaw(item)));
+
+//   return navigateTo("/checkout");
+// };
+
 const goToCheckout = () => {
   let ids = [];
   userStore.checkout = [];
+
   selectedArray.value.forEach((item) => ids.push(item.id));
 
-  let result = userStore.cart.filter((item) => {
+  let res = userStore.cart.filter((item) => {
     return ids.indexOf(item.id) != -1;
   });
-  // toRaw is used to convert reactive object to normal object, removes the need for .value in reactive objects
-  result.forEach((item) => userStore.checkout.push(toRaw(item)));
+
+  res.forEach((item) => userStore.checkout.push(toRaw(item)));
 
   return navigateTo("/checkout");
 };

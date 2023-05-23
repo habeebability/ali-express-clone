@@ -54,7 +54,7 @@
           <div class="py-2" />
 
           <button
-            @click="addToCart()"
+            @click="addToCart(product.data)"
             :disabled="isInCart"
             class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#ff851A] to-[#ffac2c]"
           >
@@ -74,14 +74,24 @@ import MainLayout from "~/layouts/MainLayout.vue";
 const userStore = useUserStore();
 const route = useRoute();
 
+// const isInCart = computed(() => {
+//   let result = false;
+//   userStore.cart.forEach((product) => {
+//     if (product.id === route.params.id) {
+//       result = true;
+//     }
+//   });
+//   return result;
+// });
+
 const isInCart = computed(() => {
-  let result = false;
-  userStore.cart.forEach((product) => {
-    if (product.id === route.params.id) {
-      result = true;
+  let res = false;
+  userStore.cart.forEach((prod) => {
+    if (route.params.id == prod.id) {
+      res = true;
     }
   });
-  return result;
+  return res;
 });
 
 const priceComputed = computed(() => {

@@ -81,7 +81,7 @@ watchEffect(async () => {
   if (currentAddress.value.data) {
     contactName.value = currentAddress.value.data.name;
     address.value = currentAddress.value.data.address;
-    zipCode.value = currentAddress.value.data.zipcode;
+    zipCode.value = currentAddress.value.data.zipCode;
     city.value = currentAddress.value.data.city;
     country.value = currentAddress.value.data.country;
 
@@ -141,7 +141,7 @@ const submit = async () => {
           userId: user.value.id,
           name: contactName.value,
           address: address.value,
-          zipCode: zipcode.value,
+          zipCode: zipCode.value,
           city: city.value,
           country: country.value,
         },
@@ -157,7 +157,7 @@ const submit = async () => {
       userId: user.value.id,
       name: contactName.value,
       address: address.value,
-      zipCode: zipcode.value,
+      zipCode: zipCode.value,
       city: city.value,
       country: country.value,
     },

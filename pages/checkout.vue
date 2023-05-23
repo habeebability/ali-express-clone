@@ -115,6 +115,10 @@ const user = useSupabaseUser();
 
 const route = useRoute();
 
+definePageMeta({
+  middleware: "auth",
+});
+
 let stripe = null;
 let elements = null;
 let card = null;
@@ -162,10 +166,97 @@ watch(
   }
 );
 
-const stripeInit = async () => {};
-const pay = async () => {};
-const createOrder = async (stripeId) => {};
-const showError = async (errorMsgText) => {};
+const stripeInit = async () => {
+  const runtimeConfig = useRuntimeConfig();
+  stripe = Stripe(runtimeConfig.stripePk);
+
+  const response = await $fetch("/api/stripe/paymentintent", {
+    method: "POST",
+    body: {
+      amount: Number(total.value),
+    },
+  });
+
+  clientSecret = response.client_secret;
+  elements = stripe.elements();
+
+  var style = {
+    base: {
+      fontSize: "18px",
+    },
+    invalid: {
+      fontFamily: "Arial, sans-serif",
+      color: "#ee4b2b",
+      iconColor: "#ee4b2b",
+    },
+  };
+
+  card = elements.create("card", {
+    hidePostalCode: true,
+    style: style,
+  });
+
+  card.mount("#card-element");
+
+  card.on("change", function (event) {
+    document.querySelector("button").disabled = event.empty;
+    document.querySelcector("#card-error").textContent = event.error
+      ? event.error.message
+      : "";
+  });
+
+  isProcessing.value = false;
+};
+const pay = async () => {
+  if (currentAddress.value && currentAddress.value.data == "") {
+    showError("Please add an address");
+    return;
+  }
+
+  isProcessing.value = true;
+
+  let result = await stripe.confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: card,
+    },
+  });
+
+  if (result.error) {
+    showError(result.error.message);
+    isProcessing.value = false;
+  } else {
+    await createOrder(result.paymentIntent.id);
+    userStore.cart = [];
+    userStore.checkout = [];
+    setTimeout(() => {
+      return navigateTo("/success");
+    }, 500);
+  }
+};
+const createOrder = async (stripeId) => {
+  await useFetch("/api/prisma/create-order", {
+    method: "POST",
+    body: {
+      userId: user.value.id,
+      stripeId: stripeId,
+      name: currentAddress.value.data.name,
+      address: currentAddress.value.data.address,
+      zipcode: currentAddress.value.data.zipcode,
+      city: currentAddress.value.data.city,
+      country: currentAddress.value.data.country,
+      products: userStore.checkout,
+    },
+  });
+};
+const showError = async (errorMsgText) => {
+  let errorMsg = document.querySelector("#card-error");
+
+  errorMsg.textContent = errorMsgText;
+
+  setTimeout(() => {
+    errorMsg.textContent = "";
+  }, 4000);
+};
 </script>
   
   
