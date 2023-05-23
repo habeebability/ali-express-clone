@@ -4,7 +4,7 @@ This is a clone of Ali Express, a popular e-commerce platform, built using Nuxt 
 
 ## LINK
 
-[@nuxtjs/supabase](https://aliexpressss-clone.netlify.app/)
+[AliExpressClone](https://aliexpressss-clone.netlify.app/)
 
 ## Features
 
