@@ -165,7 +165,7 @@ let searchItem = ref("");
 let items = ref(null);
 
 const searchByName = useDebounce(async () => {
-  isSearching.value;
+  isSearching.value = true;
   items.value = await useFetch(
     `/api/prisma/search-by-name/${searchItem.value}`
   );
