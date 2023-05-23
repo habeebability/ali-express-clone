@@ -2,6 +2,10 @@
 
 This is a clone of Ali Express, a popular e-commerce platform, built using Nuxt 3. It is built to improve my Nuxtjs skill. The project utilizes several packages and technologies to enhance its functionality and performance.
 
+## LINK
+
+[@nuxtjs/supabase](https://aliexpressss-clone.netlify.app/)
+
 ## Features
 
 - User-friendly interface with a responsive design for optimal viewing on different devices.
@@ -38,9 +42,12 @@ Before running the application, ensure that you have the following installed:
 
 Before running the application, you need to configure certain environment variables. Create a .env file in the root directory and add the following variables:
 
+```
 supabase_url=\***\*\*\*\*\***
 supabase_key=**\*\*\***
 stripe_public_key=\***\*\*\*\***
+
+```
 
 Replace your-supabase-url and your-supabase-key with your Supabase project URL and key, respectively. Similarly, replace your-stripe-public-key with your Stripe public key.
 
@@ -63,9 +70,14 @@ npm run build
 
 ## Packages used
 
-[@nuxtjs/supabase](https://supabase.nuxtjs.org/)
-[@nuxtjs/tailwindcss](https://tailwindcss.nuxtjs.org/)
-[@pinia/nuxt](https://pinia.vuejs.org/ssr/nuxt.html)
-[@prisma/client](https://www.prisma.io/docs/concepts/components/prisma-client)
-[@stripe/stripe-js](https://stripe.com)
-[nuxt-icon](https://nuxt.com/modules/icons)
+##### [@nuxtjs/supabase](https://supabase.nuxtjs.org/)
+
+##### [@nuxtjs/tailwindcss](https://tailwindcss.nuxtjs.org/)
+
+##### [@pinia/nuxt](https://pinia.vuejs.org/ssr/nuxt.html)
+
+##### [@prisma/client](https://www.prisma.io/docs/concepts/components/prisma-client)
+
+##### [@stripe/stripe-js](https://stripe.com)
+
+##### [nuxt-icon](https://nuxt.com/modules/icons)
